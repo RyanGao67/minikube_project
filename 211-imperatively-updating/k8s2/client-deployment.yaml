@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+        - name: client
+          image: stephengrider/multi-client
+          ports:
+            - containerPort: 3000
+
+# kubectl apply -f client-pod.yaml
+#pod/client-pod created
+
+# kubectl apply -f client-node-port.yaml
+#service/client-node-port created
+
+# kubectl get pods
+#NAME         READY   STATUS    RESTARTS   AGE
+#client-pod   1/1     Running   0          11s
+
+# kubectl get services
+#NAME               TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+#client-node-port   NodePort    10.98.242.134   <none>        3050:31515/TCP   106s
+#kubernetes         ClusterIP   10.96.0.1       <none>        443/TCP          17h
+
+# minikube ip
+#192.168.49.2
+
+# kubectl describe pods client-pod
+
+# kubectl delete -f client-pod.yaml
+
+# kubectl get pods
+# kubectl get deployments
+# kubectl get pods -o wide   ----> every pod will have a ip assigned to it, it is internal in our VM
+
+
+# kubectl set image deployment/client-deployment client=stephengrider/multi-client:v5
+
+# ---> deployment/client-deployment is the deployment name
+# client ---> the container name
+# client=image_name  ---> image
+
+# eval $(minikube docker-env)
